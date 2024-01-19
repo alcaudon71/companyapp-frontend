@@ -3,13 +3,14 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../shared/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MercadoComponent } from './components/mercado/mercado.component';
+import { NuevoMercadoComponent } from './components/nuevo-mercado/nuevo-mercado.component';
 
 
 
 @NgModule({
   declarations: [
-    MercadoComponent
-    //NewCategoryComponent
+    MercadoComponent,
+    NuevoMercadoComponent
   ],
   imports: [
     CommonModule,

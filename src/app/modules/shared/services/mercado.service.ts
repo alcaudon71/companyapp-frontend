@@ -30,4 +30,49 @@ export class MercadoService {
 
   }
 
+  /**
+   * Crear registro
+   * @param body JSON con los datos del registro
+   * @returns Observable
+   */
+  crearMercado(body: any): Observable<Object> {
+    const endpoint = `${base_url}/mercados`;
+
+    let retorno: Observable<Object> = this.http.post(endpoint, body);
+
+    return retorno;
+
+  }
+
+  /**
+   * Modificar registro
+   * endpoint --> http://localhost:8080/universo/company/mercados/4
+   * @param body JSON con datos del registro
+   * @param id   Id del registro que debe ser modificado
+   * @returns Observable
+   */
+  modificarMercado(body: any, id: any): Observable<Object> {
+    const endpoint = `${base_url}/mercados/${id}`;  
+
+    let retorno: Observable<Object> = this.http.put(endpoint, body);   // put --> actualizar registro
+
+    return retorno;
+
+  }
+
+  /**
+   * Eliminar registro
+   * endpoint --> http://localhost:8080/universo/company/mercados/4
+   * @param id   Id del registro que debe ser eliminado
+   * @returns Observable
+   */
+  eliminarMercado(id: any): Observable<Object> {
+    const endpoint = `${base_url}/mercados/${id}`;  
+
+    let retorno: Observable<Object> = this.http.delete(endpoint);   // delete --> eliminar registro
+
+    return retorno;
+
+  }
+
 }

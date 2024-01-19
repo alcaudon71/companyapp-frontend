@@ -1,0 +1,9 @@
+
+.mercado-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.mercado-container > * {
+    width: 100%;
+}

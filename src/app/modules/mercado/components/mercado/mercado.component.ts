@@ -7,6 +7,8 @@ import { Observable } from 'rxjs';
 import { MercadoService } from 'src/app/modules/shared/services/mercado.service';
 import { UtilService } from 'src/app/modules/shared/services/util.service';
 import { MercadoElement } from './mercado-element';
+import { NuevoMercadoComponent } from '../nuevo-mercado/nuevo-mercado.component';
+import { ConfirmComponent } from 'src/app/modules/shared/components/confirm/confirm.component';
 
 @Component({
   selector: 'compa-mercado',
@@ -14,12 +16,7 @@ import { MercadoElement } from './mercado-element';
   styleUrls: ['./mercado.component.css']
 })
 export class MercadoComponent implements OnInit {
-onEdit(arg0: any,arg1: any,arg2: any,arg3: any,arg4: any) {
-throw new Error('Method not implemented.');
-}
-onDelete(arg0: any) {
-throw new Error('Method not implemented.');
-}
+
 exportExcel() {
 throw new Error('Method not implemented.');
 }
@@ -107,6 +104,93 @@ console.log('Method not implemented.');
     }
 
   }  
+
+  /**
+   * Apertura de un Dialog Modal cuando se pulsa el boton de Agregar 
+   */
+  openDialog() {
+    console.log("Mercado - openDialog ");
+
+    // Se abre un Dialog que contiene en su interior el componente NewMercadoComponent
+    const dialogRef = this.dialog.open(NuevoMercadoComponent, {
+      width: '450px',   // ancho de la ventana del dialog
+      data: {},
+    });
+
+    // Logica a ejecutar una vez se haya cerrado la ventana Dialog
+    dialogRef.afterClosed().subscribe( (result: any) => {
+      console.log('The dialog was closed');
+      
+      // Controlamos el retorno correcto o error
+      if (result == 1) {
+        this.openSnackBar("Mercado Agregado", "Exito");
+        // Recargamos la tabla de mercados
+        this.obtenerMercados();
+      } else if (result == 2) {
+        this.openSnackBar("Se produjo un error al guardar mercado", "Error");
+      }
+
+    });
+  }
+
+  /**
+   * Modificar registro 
+   * @param id
+   * @param clave 
+   * @param descripcion 
+   * @param sector
+   * @param pais
+   */
+  onEdit (id1: number , clave1: string, descripcion1: string, sector1: string, pais1: string): void {
+    console.log("Mercado - onEdit ");
+
+    // Se abre un Dialog que contiene en su interior el componente NuevoMercadoComponent
+    const dialogRef = this.dialog.open(NuevoMercadoComponent, {
+      width: '450px',   // ancho de la ventana del dialog
+      data: {id: id1, clave: clave1, descripcion: descripcion1, sector: sector1, pais: pais1},
+    });
+
+    // Logica a ejecutar una vez se haya cerrado la ventana Dialog
+    dialogRef.afterClosed().subscribe( (result: any) => {
+      console.log('The dialog was closed');
+      
+      // Controlamos el retorno correcto o error
+      if (result == 1) {
+        this.openSnackBar("Mercado actualizado", "Exito");
+        // Recargamos la tabla de categorias
+        this.obtenerMercados();
+      } else if (result == 2) {
+        this.openSnackBar("Se produjo un error al actualizar mercado", "Error");
+      }
+
+    });
+  }
+
+  /**
+   * Eliminar Registro 
+   * @param id
+   */
+  onDelete (id1: number): void  {
+    // Se abre un Dialog que contiene en su interior el componente ventana modal de Confirmacion
+    const dialogRef = this.dialog.open(ConfirmComponent, {
+      data: {id: id1, module: "mercado"}, // se indica el tipo de objeto a eliminar (category)
+    });
+
+    // Logica a ejecutar una vez se haya cerrado la ventana Dialog
+    dialogRef.afterClosed().subscribe( (result: any) => {
+      console.log('The dialog was closed');
+      
+      // Controlamos el retorno correcto o error
+      if (result == 1) {
+        this.openSnackBar("Mercado eliminado", "Exito");
+        // Recargamos la tabla de categorias
+        this.obtenerMercados();
+      } else if (result == 2) {
+        this.openSnackBar("Se produjo un error al eliminar mercado", "Error");
+      }
+
+    });
+  }
 
   /**
    * Abrir mensaje en una ventana
