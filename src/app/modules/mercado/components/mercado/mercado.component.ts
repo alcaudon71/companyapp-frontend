@@ -17,16 +17,6 @@ import { ConfirmComponent } from 'src/app/modules/shared/components/confirm/conf
 })
 export class MercadoComponent implements OnInit {
 
-exportExcel() {
-throw new Error('Method not implemented.');
-}
-openCategoryDialog() {
-throw new Error('Method not implemented.');
-}
-buscar(arg0: string) {
-console.log('Method not implemented.');
-}
-
   // Inyectamos el Servicio de mercados y los elementos de Angular Material 
   private mercadoService = inject(MercadoService);
   public  dialog = inject(MatDialog);
@@ -193,6 +183,34 @@ console.log('Method not implemented.');
   }
 
   /**
+   * Buscar registros que empiecen por un determinado literal 
+   * @param literal 
+   * @returns 
+   */
+  buscar( literal: string) {
+
+    console.log("buscar por literal: " + literal);
+
+    // Si el usuario no introduce literal, recuperamos el total de registros
+    if (literal.length == 0) {
+      return this.obtenerMercados();
+    }
+
+    // Trabajamos con el literal introducido por el usuario en la casilla de busqueda
+    let obsMercadoByName = this.mercadoService.getMercadoByClave(literal);
+
+    obsMercadoByName.subscribe({
+      next: (resp:any) => {
+        // Cargar el datasource con la info recibida en el item del observable
+        this.procesarMercadosResponse(resp);
+      }
+      ,
+      error: (error:any) => {}
+    });
+
+  }
+
+  /**
    * Abrir mensaje en una ventana
    */
   openSnackBar(message: string, action: string): MatSnackBarRef<SimpleSnackBar> {
@@ -200,5 +218,34 @@ console.log('Method not implemented.');
     return this.snackBar.open(message, action, {duration: 2000});
 
   }
-  
+
+  /**
+   * Exportar lista de registros a fichero excel xlsx 
+   */
+  exportExcel(): void {
+
+    let obsExportarMercados: Observable<Object> = this.mercadoService.exportar();
+
+    obsExportarMercados.subscribe({
+      next: (item: any) => {
+        // Definimos el fichero
+        let file = new Blob([item], 
+                    {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})   // formato excel xml 2007
+        let fileUrl = URL.createObjectURL(file);
+
+        // Creamos el anchor
+        var anchor = document.createElement("a");
+        anchor.download = "mercados.xlsx";   // nombre con el que se va a almacenar el fichero xlsx
+        anchor.href = fileUrl;
+        anchor.click();
+
+        this.openSnackBar("Archivo exportado correctamente", "Exitosa");
+      },
+      error: (error: any) => {
+        this.openSnackBar("No se pudo exportar el archivo", "Error");
+      }
+    });
+
+  }
+
 }

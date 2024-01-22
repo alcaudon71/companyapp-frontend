@@ -75,4 +75,51 @@ export class MercadoService {
 
   }
 
+  /**
+   * Buscar mercado
+   * endpoint --> http://localhost:8080/universo/company/mercados/1
+   * @param id   Id del mercado que debe ser modificado
+   * @returns Observable
+   */
+  getMercadoById(id: any): Observable<Object> {
+    const endpoint = `${base_url}/mercados/${id}`;  
+
+    let retorno: Observable<Object> = this.http.get(endpoint);   // get --> obtener registro
+
+    return retorno;
+
+  }
+
+  /**
+   * Buscar por clave de registro
+   * @param clave  Clave del registro que debe ser buscado
+   * @returns Observable<Object>  Observable de la invocacion del servicio
+   */
+  getMercadoByClave (clave: any): Observable<Object> {
+
+    const endpoint = `${base_url}/mercados/filtro/${clave}`;   // endpoint del webservice del servidor que busca cadena
+
+    console.log("Invocacion al webservice de filterByClave");
+    console.log("endpoint: " + endpoint);
+    console.log("clave: " + clave);
+
+    return this.http.get(endpoint);
+    
+  }
+
+  /**
+   * Exportar lista de registros a fichero excel
+   * @returns Observable
+   */
+  exportar(): Observable<Object> {
+    const endpoint = `${base_url}/mercados/export/excel`;  
+
+    let retorno: Observable<Object> = this.http.get(endpoint, {
+      responseType: 'blob'   // blob --> vamos a recibir una respuesta con un fichero tipo blob
+    });   
+
+    return retorno;
+
+  }
+
 }
