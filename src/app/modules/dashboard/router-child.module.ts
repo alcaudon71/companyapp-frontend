@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { MercadoComponent } from '../mercado/components/mercado/mercado.component';
+import { EmpresaComponent } from '../empresa/components/empresa/empresa.component';
 
 const childRoutes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
   { path: 'mercado', component: MercadoComponent},
-  //{ path: 'empresa', component: EmpresaComponent}
+  { path: 'empresa', component: EmpresaComponent}
 ]
 
 @NgModule({

@@ -6,6 +6,7 @@ import { HomeComponent } from './components/home/home.component';
 import { SharedModule } from '../shared/shared.module';
 import { MaterialModule } from '../shared/material.module';
 import { MercadoModule } from '../mercado/mercado.module';
+import { EmpresaModule } from '../empresa/empresa.module';
 
 
 // Este es el modulo principal de la aplicacion, aqui llegamos redirigidos desde el app-root
@@ -19,7 +20,7 @@ import { MercadoModule } from '../mercado/mercado.module';
     RouterModule, 
     SharedModule,
     MercadoModule,
-    //EmpresaModule,
+    EmpresaModule,
     MaterialModule
   ]
 })

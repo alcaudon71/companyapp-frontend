@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MercadoService } from '../../services/mercado.service';
 import { Observable } from 'rxjs';
+import { EmpresaService } from '../../services/empresa.service';
 
 @Component({
   selector: 'compa-confirm',
@@ -14,7 +15,7 @@ export class ConfirmComponent {
   public dialogRef = inject(MatDialogRef);
   public data = inject(MAT_DIALOG_DATA);   // token que permite acceder a los datos del Dialog 
   public mercadoService = inject(MercadoService);
-  public empresaService = inject(MercadoService); // EmpresaService
+  public empresaService = inject(EmpresaService); // EmpresaService
 
   /**
    * Cancelar Accion
@@ -30,7 +31,7 @@ export class ConfirmComponent {
    * --> Mercado, Empresa
    */
   onDelete() {
-    console.log("onDelete - data: ", this.data);
+    console.log("ConfirmComponent - onDelete - data: ", this.data);
 
     // Si en el Dialog hemos recibido algun id de objeto
     if (this.data != null) {
@@ -53,9 +54,9 @@ export class ConfirmComponent {
 
       } else if (this.data.module == "empresa") {
           // Tratamiento para borrado de objeto Empresa
+          console.log("Tratamiento para borrado de objeto Empresa");
 
-          //let obsEmpresaDelete: Observable<Object> = this.empresaService.eliminarEmpresa(this.data.id);
-          let obsEmpresaDelete: Observable<Object> = this.mercadoService.eliminarMercado(this.data.id);
+          let obsEmpresaDelete: Observable<Object> = this.empresaService.eliminarEmpresa(this.data.id);
 
           obsEmpresaDelete.subscribe({
             next: (item:any) => {
