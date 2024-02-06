@@ -91,4 +91,19 @@ export class EmpresaService {
     
   }
 
+  /**
+   * Exportar lista de registros a fichero excel
+   * @returns Observable
+   */
+  exportar(): Observable<Object> {
+    const endpoint = `${base_url}/empresas/export/excel`;  
+  
+    let retorno: Observable<Object> = this.http.get(endpoint, {
+      responseType: 'blob'   // blob --> vamos a recibir una respuesta con un fichero tipo blob
+    });   
+  
+    return retorno;
+  
+  }
+
 }

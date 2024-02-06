@@ -16,11 +16,6 @@ import { ConfirmComponent } from 'src/app/modules/shared/components/confirm/conf
   styleUrls: ['./empresa.component.css']
 })
 export class EmpresaComponent implements OnInit {
-  
-exportExcel() {
-throw new Error('Method not implemented.');
-}
-
 
   // Inyecciones de dependencias
   private empresaService = inject(EmpresaService);
@@ -233,6 +228,35 @@ throw new Error('Method not implemented.');
       }
     })
 
+
+  }
+
+  /**
+   * Exportar lista de empresas a fichero excel xlsx 
+   */
+  exportExcel(): void {
+
+    let obsExportEmpresas: Observable<Object> = this.empresaService.exportar();
+
+    obsExportEmpresas.subscribe({
+      next: (item: any) => {
+        // Definimos el fichero
+        let file = new Blob([item], 
+                    {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})   // formato excel xml 2007
+        let fileUrl = URL.createObjectURL(file);
+
+        // Creamos el anchor
+        var anchor = document.createElement("a");
+        anchor.download = "empresas.xlsx";   // nombre con el que se va a almacenar el fichero xlsx
+        anchor.href = fileUrl;
+        anchor.click();
+
+        this.openSnackBar("Archivo exportado correctamente", "Exitosa");
+      },
+      error: (error: any) => {
+        this.openSnackBar("No se pudo exportar el archivo", "Error");
+      }
+    });
 
   }
 
